@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+    <script src="https://kit.fontawesome.com/72b7e04683.js" crossorigin="anonymous"></script>
+    <style>
+        #o-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 80px;
+            background-color: #231f20;
+            max-width: inherit;
+        }
+
+        #o-header a {
+            text-decoration: none;
+            font-family: 'Spartan', sans-serif;
+        }
+
+        .sell-button {
+            padding: 10px;
+            transition: 0.4s;
+        }
+
+        .sell-button:hover {
+            border-bottom: 3px solid white;
+            border-left: 3px solid white;
+        }
+
+        .sell-button h2 {
+            color: white;
+            font-size: 30px;
+        }
+
+        .contain-div {
+            text-align: center;
+        }
+
+        #btn-1,
+        #btn-2 {
+
+            background: rgb(151, 199, 198);
+            width: 200px;
+            height: 180px;
+            margin-top: 10%;
+            border-radius: 10px;
+            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.1);
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <section id="o-header">
+
+        <div class="er-div">
+            <p>{{error}}</p>
+        </div>
+        <a href="" style="color:white; font-size: 30px;">{{message}}</a>
+
+    </section>
+    <div class="contain-div">
+        <button id="btn-1">Chat </button>
+        <button id="btn-2">Todo</button>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btn-1').click(function (event) {
+                event.preventDefault();
+
+                window.location.href = '/chathome';
+            });
+        });
+        $(document).ready(function () {
+            $('#btn-2').click(function (event) {
+                event.preventDefault();
+
+                window.location.href = '/thome';
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+        cbtn = document.getElementById("btn-1");
+        tbtn = document.getElementById("btn-2");
+        // cbtn.addEventListener("click", chatnav);
+        tbtn.addEventListener("click", tasknav);
+
+        function chatnav() {
+            console.log("Came");
+            $.ajax({
+                url: '/chatnavig',
+                success: function (response) {
+                    console.log("Chatroom travelled");
+                },
+            });
+        }
+
+        function tasknav() {
+            $.ajax({
+                url: '/tasknavig',
+                success: function (response) {
+                    console.log("taskroom travelled");
+                },
+            });
+        }
+    </script>
+</body>
+
+</html>

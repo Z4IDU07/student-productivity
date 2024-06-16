@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>PROFILE</title>
+	<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/style2.css')}}">
+	<!-- <script src="cookie.js"></script> -->
+	<script src="static/js/login_validation.js"></script>
+</head>
+
+<body>
+	<section id="o-header">
+
+		<a href="#" style="color:white; font-size: 30px;">MY PROFILE</a>
+		<a href="{{url_for('signup')}}">
+			<div class="sell-button">
+				<h2>Signup</h2>
+			</div>
+		</a>
+	</section>
+	<div class="bod">
+		<div class="main">
+			<div class="wrapper">
+				<header>Login</header>
+				<form action="#" method="post" name="register">
+					<div class="field email">
+						<div class="input-area">
+							<input type="text" name="email" placeholder="Email Address">
+							<i class="icon fas fa-envelope"></i>
+							<i class="error error-icon fas fa-exclamation-circle"></i>
+						</div>
+
+					</div>
+					<div class="field password">
+						<div class="input-area">
+							<input type="password" name="pswd" placeholder="Password">
+							<i class="icon fas fa-lock"></i>
+							<i class="error error-icon fas fa-exclamation-circle"></i>
+						</div>
+						<div class="error error-txt">Password can't be blank</div>
+					</div>
+					<div class="pass-txt"><a href="#">Forgot password?</a></div>
+					<input id="logSubmit" type="submit" value="Login">
+					<script type="text/javascript">
+
+
+					</script>
+
+
+					<!-- <script src="static/js/login_validation.js"></script> -->
+				</form>
+
+			</div>
+		</div>
+		<div id="dialog-container" class="dialog-container">
+			<div class="dialog-header">Error</div>
+			<div id="dialog-body" class="dialog-body"></div>
+			<div class="dialog-footer">
+				<a onclick="CustomAlert.close()">Ok</a>
+			</div>
+			<script type="text/javascript">
+
+				const container = document.getElementById('dialog-container');
+				const CustomAlert = new function (msg) {
+					this.show = function (msg) {
+						let content = document.getElementById('dialog-body');
+						container.style.top = '30%';
+						container.style.opacity = 1;
+						content.textContent = msg;
+					}
+
+					this.close = function () {
+						container.style.top = '-30%';
+						container.style.opacity = 0;
+					}
+				}
+				if ('{{error}}') {
+					CustomAlert.show('{{error}}');
+				}
+			</script>
+		</div>
+</body>
+
+</html>

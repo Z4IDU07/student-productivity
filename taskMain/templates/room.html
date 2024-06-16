@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags, title, and external resources remain the same -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat app</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 36px;
+            margin-top: 50px;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            width: auto;
+        }
+
+        .main {
+            /* border: 2px solid black; */
+            padding: 20px;
+            width: 50%;
+        }
+
+        .message-box {
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-box h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .text {
+            margin-bottom: 10px;
+        }
+
+        .text strong {
+            color: #333;
+        }
+
+        .text .muted {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .inputs {
+            display: flex;
+            align-items: center;
+        }
+
+        .inputs input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .inputs #files {
+            display: none;
+        }
+
+        .upload-label {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #4a90e2;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .upload-label:hover {
+            background-color: #357dbf;
+        }
+
+        #send-btn,
+        #upload-btn {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #4a90e2;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #send-btn:hover,
+        #upload-btn:hover {
+            background-color: #357dbf;
+        }
+
+        /* Add the following CSS styles for displaying files in the chat panel */
+        .file-info {
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .file-info span {
+            margin-right: 10px;
+        }
+
+        .messages .file-message {
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .messages .file-message a {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        h1 {
+            text-align: center;
+            text-decoration-color: rgb(231, 163, 80)
+        }
+
+        .file-info {
+            display: inline-block;
+            width: 100px;
+            /* Adjust as needed */
+            height: 100px;
+            /* Adjust as needed */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .file-info img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Chat Room</h2>
+
+    <div class="container">
+        <div class="main">
+            <div class="message-box">
+                <h2>Chat-room code: {{ code }}</h2>
+                <div class="messages" id="messages"></div>
+                <div class="inputs">
+                    <input type="text" rows="3" placeholder="Message" name="message" id="message" />
+                    <button type="button" name="send" id="send-btn" onclick="sendMessage()">Send</button>
+                    <form action="/uploader" method="post" id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" name="file1" id="files" class="file-input"
+                            onchange="displayFileName(this)" />
+                        <label for="files" class="upload-label">Share doc</label>
+                        <button type="submit" onclick="uploadFile()" id="upload-btn">Upload</button>
+                    </form>
+                    <div id="mss"></div>
+                </div>
+            </div>
+        </div>
+        <div id="filesdiv">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var socketio = io();
+        function displayPDF() {
+            const fileInput = document.getElementById('files');
+            const pdfDisplayArea = document.getElementById('filesdiv');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                const fileData = event.target.result;
+
+                // Emit file data to server
+                socketio.emit('file_uploaded', { file_name: file.name, file_data: fileData });
+
+                // Display the PDF file
+                const object = document.createElement('object');
+                object.data = fileData;
+                object.type = 'application/pdf';
+                object.width = '600';
+                object.height = '400';
+
+                // Clear existing content in display area and append the object element
+                pdfDisplayArea.innerHTML = '';
+                pdfDisplayArea.appendChild(object);
+            };
+
+            // Read the uploaded file as a data URL
+            reader.readAsDataURL(file);
+        }
+        socketio.on('display_file', function (data) {
+            const file_name = data.file_name;
+            const file_data = data.file_d;
+            const pdfDisplayArea = document.getElementById('filesdiv');
+            const object = document.createElement('object');
+            object.data = file_data; // Change the path as needed
+            object.type = 'application/pdf';
+            object.width = '600';
+            object.height = '400';
+            pdfDisplayArea.innerHTML = '';
+            pdfDisplayArea.appendChild(object);
+            console.log("Called");
+        });
+
+        $(document).ready(function () {
+            // Function to upload file
+            function uploadFile() {
+                var formData = new FormData(document.getElementById("uploadForm"));
+                $.ajax({
+                    url: "/uploader",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        document.getElementById("message").value = "";
+                        displayPDF();// Clear message input
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        $("#mss").text("Error uploading file: " + error);
+                    }
+                });
+
+
+            }
+
+            // Function to create and append message
+            function createMessage(name, msg) {
+                const content = `
+            <div class= "text">
+                <span>
+                    <strong>${name}</strong>: ${msg}
+                </span>
+                <span class = "muted">
+                    ${new Date().toLocaleString()}
+                </span>
+            </div>
+        `;
+                $("#messages").append(content);
+            }
+
+            // Socket.io integration
+
+            socketio.on("message", function (data) {
+                createMessage(data.name, data.message);
+            });
+
+
+            // Function to send message
+            function sendMessage() {
+                const message = $("#message").val();
+                if (message.trim() === "") return;
+                socketio.emit("message", { data: message });
+                $("#message").val(""); // Clear message input
+            }
+
+
+            // Function to display file name
+            function displayFileName(input) {
+                const fileName = input.files[0].name;
+                const fileInfo = $("<div>").addClass("file-info").html(`<span>File:</span> ${fileName}`);
+                $("#messages").append(fileInfo);
+            }
+
+            // Event listener for send button
+            $("#send-btn").click(sendMessage);
+
+            // Event listener for file input change
+            $("#files").change(function () {
+                displayFileName(this);
+            });
+
+            // Event listener for form submission (upload)
+            $("#uploadForm").submit(function (event) {
+                event.preventDefault(); // Prevent default form submission
+                uploadFile();
+            });
+        });
+
+
+    </script>
+
+
+    {% for msg in messages %}
+    <script type="text/javascript">
+        createMessage("{{msg.name}}", "{{msg.message}}");
+    </script>
+    {% endfor%}
+</body>
+
+</html>

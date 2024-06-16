@@ -1,0 +1,256 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3498db, #8e44ad); /* Gradient background */
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #3498db;
+}
+
+/* Form styles */
+.forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.join {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.create-btn {
+    width: 100%;
+}
+
+/* Message box styles */
+.message-box {
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    width: 80vh;
+    align-items: stretch;
+    margin: 0 auto; /* Center horizontally */
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.messages {
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    flex: 1;
+    width: 100%;
+    padding: 10px;
+}
+
+.inputs {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h2 {
+    text-align: center;
+    color: #fff; /* Text color */
+}
+
+/* Message styles */
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.muted {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7); /* Semi-transparent white text */
+}
+.create-btn {
+    width: 100%;
+    padding: 10px 20px; /* Adjust padding */
+    background-color: #ff6b6b; /* Button background color */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add border radius */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth transition on background color change */
+}
+
+.create-btn:hover {
+    background-color: #ff4d4d; /* Change background color on hover */
+}
+
+.chat-body {
+    background: #E3F2FD;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100vh;
+}
+
+.chatbot-popup {
+    position: relative;
+}
+
+.chatbot-popup-button {
+    background-color: #724ae8;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.chatbot-popup-button:hover {
+    background-color: #5a3abf;
+}
+
+.chatbot-popup-content {
+    display: none;
+    position: absolute;
+    bottom: 90px;
+    right: 30px;
+    width: 400px;
+    /* Increased width */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.chatbot-popup-content.active {
+    display: block;
+}
+
+.chatbot-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.chatbot-popup-header h2 {
+    font-size: 20px;
+    color: #333;
+}
+
+.chatbot-popup-close {
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.chatbot-popup-close:hover {
+    color: #777;
+}
+
+.chatbot-popup-body {
+    max-height: 300px;
+    /* Increased height */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    /* Ensure messages stack vertically */
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: #e3e3e3;
+    color: #333;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 70%;
+    /* Limit message width */
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: #724ae8;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 70%;
+    /* Limit message width */
+}
+
+.chatbot-popup-input {
+    width: calc(100% - 80px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.chatbot-popup-send {
+    width: 60px;
+    height: 40px;
+    background-color: #724ae8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.chatbot-popup-send:hover {
+    background-color: #5a3abf;
+}
+
+
+#o-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
+    background-color: #231f20;
+    max-width: inherit;
+}
+
+#o-header a {
+    text-decoration: none;
+    font-family: 'Spartan', sans-serif;
+}
+
+.sell-button {
+    padding: 10px;
+    transition: 0.4s;
+}
+
+.sell-button:hover {
+    border-bottom: 3px solid white;
+    border-left: 3px solid white;
+}
+
+.sell-button h2 {
+    color: white;
+    font-size: 30px;
+}

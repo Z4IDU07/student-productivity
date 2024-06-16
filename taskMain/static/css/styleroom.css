@@ -1,0 +1,82 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #3498db, #8e44ad); /* Gradient background */
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 30%;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.search input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.chat-list {
+    overflow-y: auto;
+}
+
+.chatroom {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+.message-box {
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.messages {
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    flex: 1;
+    width: 100%;
+    padding: 10px;
+}
+
+.inputs {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.create-btn {
+    width: 100px; /* Adjust width as needed */
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.muted {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7); /* Semi-transparent white text */
+}
